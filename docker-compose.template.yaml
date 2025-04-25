@@ -1,0 +1,43 @@
+# Deploying a GTNH server using itzg/minecraft-server
+# Based on a template provided by  Liz Fransen https://github.com/itzg/docker-minecraft-server/commit/236ed74295b8413c0824b11eeb7271f19a4c36ca
+# Author: SgtMate
+# Parametrized by: VaSeWS
+
+services:
+  gtnh:
+    image: itzg/minecraft-server:java21
+    pull_policy: missing
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    ports:
+      - "{GAME_PORT}:25565" # Game-server port, change if needed
+    environment:
+      EULA: "TRUE"
+      TYPE: CUSTOM
+      GENERIC_PACK: /server-files/{MODPACK_ARCHIVE}
+      # if this isn't true, then the container tries to update the modpack every run
+      SKIP_GENERIC_PACK_UPDATE_CHECK: "true"
+      # To update the pack enable this:
+      # FORCE_GENERIC_PACK_UPDATE: "true"
+      # Use during update process for manual intervention:
+      # SETUP_ONLY: true
+      CUSTOM_SERVER: "lwjgl3ify-forgePatches.jar"
+      MEMORY: "{MEMORY}"
+      JVM_OPTS: "-Dfml.readTimeout=180 @java9args.txt"
+      # Dump content of server.properties file at start (useful for debugging)
+      DUMP_SERVER_PROPERTIES: "TRUE"
+      # Enable minecraft server console access
+      CREATE_CONSOLE_IN_PIPE: "true"
+# Set Whitelist
+      WHITELIST: |
+        {WHITELIST}
+# Set Administrators
+      OPS: |
+        {OPS}
+    volumes:
+      - mc-data:/data
+      - ./gtnh-server-files:/server-files:ro
+# You should work out a backup concept for the volume!
+volumes:
+  mc-data:
