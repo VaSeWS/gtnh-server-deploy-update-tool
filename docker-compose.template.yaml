@@ -6,10 +6,10 @@
 services:
   gtnh:
     image: itzg/minecraft-server:java21
-    pull_policy: missing
+    pull_policy: if_not_present
     restart: unless-stopped
-    tty: true
     stdin_open: true
+    tty: true
     ports:
       - "{GAME_PORT}:25565" # Game-server port, change if needed
     environment:
@@ -38,8 +38,7 @@ services:
       OPS: |
         {OPS}
     volumes:
-      - mc-data:/data
+      - ./mc-data:/data
       - ./gtnh-server-files:/server-files:ro
-# You should work out a backup concept for the volume!
 volumes:
   mc-data:

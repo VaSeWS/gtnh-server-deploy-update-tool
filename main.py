@@ -114,10 +114,10 @@ def action_install(args):
 
 
 def action_run(args):
-    cmd = ["docker-compose", "run", "-d", "-f", DOCKER_COMPOSE_FILE]
+    cmd = ["docker-compose", "-f", DOCKER_COMPOSE_FILE, "up", "-d"]
     subprocess.run(
-            cmd,
-            check=True,
+        cmd,
+        check=True,
     )
 
 
@@ -138,7 +138,7 @@ def main():
     run_parser.set_defaults(func=action_run)
 
     args = parser.parse_args()
-    args.command(args)
+    args.func(args)
 
     if args.command != "run" and args.run:
         action_run(args)
