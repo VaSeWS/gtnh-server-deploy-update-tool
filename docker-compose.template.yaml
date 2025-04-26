@@ -15,6 +15,8 @@ services:
     environment:
       EULA: "TRUE"
       TYPE: CUSTOM
+      DIFFICULTY: normal
+      SERVER_NAME: "GT:NH Custom Server"
       GENERIC_PACK: /server-files/{MODPACK_ARCHIVE}
       # if this isn't true, then the container tries to update the modpack every run
       SKIP_GENERIC_PACK_UPDATE_CHECK: "true"
